@@ -13,6 +13,8 @@ defmodule MyApp.User do
     timestamps()
   end
 
+  def validate_before_insert(changeset), do: apply_action(changeset, :insert)
+
   @doc false
   def changeset(user, attrs) do
     user

@@ -32,7 +32,10 @@ defmodule MyApp.Users.Create do
   def call(params) do
     cep = Map.get(params, :cep)
 
-    with {:ok, %{"localidade" => city, "uf" => uf}} <- Client.get_cep_info(cep),
+    changeset = User.changeset(%User{}, params)
+
+    with {:ok, %User{}} <- User.validate_before_insert(changeset),
+         {:ok, %{"localidade" => city, "uf" => uf}} <- Client.get_cep_info(cep),
          params <- Map.merge(params, %{city: city, uf: uf}),
          changeset <- User.changeset(%User{}, params),
          {:ok, %User{}} = user <- Repo.insert(changeset) do
