@@ -1,6 +1,8 @@
 defmodule MyApp.ViaCep.HttpoisonClient do
   alias HTTPoison.{Error, Response}
 
+  @behaviour MyApp.ViaCep.Behaviour
+
   @base_url "https://viacep.com.br/ws/"
 
   def get_cep_info(url \\ @base_url, cep) do
@@ -30,7 +32,7 @@ defmodule MyApp.ViaCep.HttpoisonClient do
     {:error, %{status: :bad_request, result: "Invalid CEP!"}}
   end
 
-  defp handle_get({:error, reason}) do
+  defp handle_get({:error, %Error{id: _id, reason: reason}}) do
     {:error, %{status: :bad_request, result: reason}}
   end
 end

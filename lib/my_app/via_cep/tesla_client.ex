@@ -3,6 +3,8 @@ defmodule MyApp.ViaCep.TeslaClient do
 
   alias Tesla.Env
 
+  @behaviour MyApp.ViaCep.Behaviour
+
   @base_url "https://viacep.com.br/ws/"
 
   plug Tesla.Middleware.JSON

@@ -35,11 +35,21 @@ defmodule MyApp.Users.Create do
     changeset = User.changeset(%User{}, params)
 
     with {:ok, %User{}} <- User.validate_before_insert(changeset),
-         {:ok, %{"localidade" => city, "uf" => uf}} <- Client.get_cep_info(cep),
+         {:ok, %{"localidade" => city, "uf" => uf}} <- client().get_cep_info(cep),
          params <- Map.merge(params, %{city: city, uf: uf}),
          changeset <- User.changeset(%User{}, params),
          {:ok, %User{}} = user <- Repo.insert(changeset) do
       user
     end
+  end
+
+  defp client do
+    # assim:
+    # Application.fetch_env!(:my_app, __MODULE__)[:via_cep_adapter]
+
+    # ou:
+    :my_app
+    |> Application.fetch_env!(__MODULE__)
+    |> Keyword.get(:via_cep_adapter)
   end
 end
