@@ -1,6 +1,6 @@
 defmodule MyApp.Users.Create do
   alias MyApp.{Repo, User}
-  alias MyApp.ViaCep.HttpoisonClient, as: Client
+  # alias MyApp.ViaCep.HttpoisonClient, as: Client
 
   @type user_params :: %{
           first_name: String.t(),
@@ -44,10 +44,6 @@ defmodule MyApp.Users.Create do
   end
 
   defp client do
-    # assim:
-    # Application.fetch_env!(:my_app, __MODULE__)[:via_cep_adapter]
-
-    # ou:
     :my_app
     |> Application.fetch_env!(__MODULE__)
     |> Keyword.get(:via_cep_adapter)
